@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 import imagehash
-from collections import defaultdict
 
 class ISSDataset(Dataset):
     def __init__(self, img_dir, transform):
@@ -49,27 +48,27 @@ class Model():
         ])
 
         resnet50 = models.resnet50(weights=True) 
-        resnet50 = torch.nn.Sequential(*(list(model.children())[:-1]))
+        resnet50 = torch.nn.Sequential(*(list(resnet50.children())[:-1]))
         resnet50.to(self.device)
         resnet50.eval()
 
         self.model = resnet50
 
-    def extract_features(dir):
+    def extract_features(self, dir):
         dataset = ISSDataset(dir, self.transform)
         loader = DataLoader(dataset, batch_size=8, shuffle=False, num_workers=2)
 
 
         with torch.no_grad():
             for imgs, paths in tqdm(loader):
-                imgs = imgs.to(device)
-                feats = model(imgs).squeeze(-1).squeeze(-1).cpu().numpy()
+                imgs = imgs.to(self.device)
+                feats = self.model(imgs).squeeze(-1).squeeze(-1).cpu().numpy()
                 self.all_features.extend(feats)
                 self.all_paths.extend(paths)
 
-    def save_features(path = 'features_50.csv'):
-        features = np.array(all_features)
+    def save_features(self, path = 'features_50.csv'):
+        features = np.array(self.all_features)
         df = pd.DataFrame(features)
-        df['path'] = all_paths
+        df['path'] = self.all_paths
         df.to_csv(path, index=False)
 
