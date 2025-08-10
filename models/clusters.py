@@ -23,6 +23,7 @@ class Cluster():
 
         df.to_csv(clusters, index=False)
         print(f'✅ Clusters saved to {clusters}')
+        return df
 
     def save_clusters_as_images(self, clusters, destination = 'clustered_images'):
         df = clusters

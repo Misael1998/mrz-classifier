@@ -56,7 +56,7 @@ class Model():
 
     def extract_features(self, dir):
         dataset = ISSDataset(dir, self.transform)
-        loader = DataLoader(dataset, batch_size=8, shuffle=False, num_workers=2)
+        loader = DataLoader(dataset, batch_size=14, shuffle=False, num_workers=2)
 
 
         with torch.no_grad():
