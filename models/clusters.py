@@ -37,6 +37,7 @@ class Cluster():
             src_path = row["path"]
             cluster_id = row["cluster"]
             dst_dir = os.path.join(destination, f"cluster_{cluster_id}")
+            os.makedirs(dst_dir, exist_ok=True)
 
             try:
                 img = Image.open(src_path).convert("RGB")
