@@ -41,3 +41,5 @@ history = model.fit(
     epochs=100,
     batch_size=16  # lower for 4GB GPU
 )
+
+model.save("models/mrz_classifier.keras")
